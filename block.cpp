@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <functional>
+#include <map>
 
 using namespace std;
 
@@ -12,6 +13,9 @@ struct node{
 int n;
 struct node a[10000];
 int users = 0;
+
+map <int , int> m;
+
 class nodesinnetwork {
 	public :
 
@@ -40,7 +44,7 @@ void clear(){
 		cout<<"\n";
 	}
 }
-
+int userno = 0;
 int main()
 {
     clear();
@@ -55,7 +59,7 @@ int main()
     string s;
     
     while(1){
-        cout<<"\nMENU\n1.INSERT NEW BLOCK\n2.PRINT WHOLE BLOCKCHAIN\n3.ADD NODE IN NETWORK & MAKE IT CONSISTENT WITH NETWORK BLOCKCHAIN\n4.PRINT BLOCKCHAIN AT SPECIFIC NODE\n5.EXIT\n";
+        cout<<"\nMENU\n1.INSERT NEW BLOCK\n2.PRINT WHOLE BLOCKCHAIN\n3.ADD NODE IN NETWORK & MAKE IT CONSISTENT WITH NETWORK BLOCKCHAIN\n4.PRINT BLOCKCHAIN AT SPECIFIC NODE\n5.EXIT\n6.Transfer from one account to other\n7.Display Nth user's account balence\n";
         int option;
         cin>>option;
 	int index1;
@@ -96,6 +100,8 @@ int main()
 		users++;
 		cout<<"\nnode added to the network with initially empty blockchain!\n";
 		
+		m.insert(make_pair(userno++,1000));
+
 		break;
 	    case 4 :
 		cout<<"\nenter serial number of the node (starting from 0) :\n";
@@ -107,7 +113,38 @@ int main()
 		ptr = allnodes[index1];
 		ptr->print();
 		break;	
-	    
+	    case 6:
+		
+			cout<<"\nenter source account number :\n";
+			int number1;
+			cin>>number1;
+
+			cout<<"\nenter destination account number : \n";int number2;cin>>number2;
+			if(number1>userno-1){cout<<"\nsource number is incorrect\n";continue;};
+			if(number2>userno-1){cout<<"\ndestination number is incorrect\n";continue;};	
+		
+			cout<<"\nenter amount :\n";
+			int amt;
+
+			cin>>amt;
+
+			if(m.find(number1)->second < amt ){cout<<"\nuser does not have enough balance\n";continue;}
+			m.find(number1)->second = m.find(number1)->second - amt;
+			m.find(number2)->second = m.find(number2)->second + amt;
+			
+				
+			break;
+
+		case 7:
+		cout<<"enter user number : ";
+		int now;
+		cin>>now;
+		if(now <= userno-1){
+			cout<<"\nBalence :\t"<<((m.find(now))->second)<<endl;
+		}else{
+			cout<<"\nuser does not exits !\n";
+		}
+		break;
             default: cout<<"\nCHOOSE CORRECT OPTION\n";
         }
     }
